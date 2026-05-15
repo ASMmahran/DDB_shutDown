@@ -42,11 +42,9 @@ func wallpaperHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	defer file.Close()
 
-	// 1. الحصول على المسار الكامل وتجهيز اسم الملف
 	pwd, _ := os.Getwd()
 	imagePath := pwd + "\\new_wallpaper.jpg"
 
-	// 2. إنشاء الملف وحفظه
 	dst, err := os.Create(imagePath)
 	if err != nil {
 		http.Error(w, "Error saving file", 500)
@@ -60,11 +58,8 @@ func wallpaperHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// خطوة مهمة جداً: قفل الملف فوراً عشان ويندوز يقدر يقراه
 	dst.Close()
 
-	// 3. أمر PowerShell مع معالجة المسافات بشكل صحيح
-	// نستخدم الحرف @ قبل النص في PowerShell للتعامل مع المسارات الصعبة
 	psScript := fmt.Sprintf(`
 		$Path = '%s'
 		$code = @'
